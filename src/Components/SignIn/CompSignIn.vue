@@ -10,6 +10,13 @@
             ></v-text-field>
             <br/>
             <v-text-field label="Password" v-model="password"></v-text-field>
+            <label>
+                Log in as tiffin service provider?
+            <v-radio-group v-model="isServiceProvider">
+                <v-radio label="Yes" value=true></v-radio>
+                <v-radio label="No" value=false></v-radio>
+            </v-radio-group>
+            </label>
         </div>
         <div style="display: flex; align-items: center">
            <v-btn variant="outlined" type="submit" color = "primary">Sign In</v-btn>
@@ -27,12 +34,14 @@ export default {
       ],
       email: '',
       password: '',
+      isServiceProvider: ""
     }),
     methods: {
         callMe() {
             const obj = {
                email: this.email,
-               password: this.password
+               password: this.password,
+               isServiceProvider: this.isServiceProvider
             }
             this.$store.dispatch('logIn',
                 {

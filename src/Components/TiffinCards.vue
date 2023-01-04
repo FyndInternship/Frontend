@@ -16,11 +16,11 @@
       src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
     ></v-img> -->
 
-    <v-card-title ><h2>Om Services</h2></v-card-title>
-    <v-card-subtitle><strong>Owner-</strong><i>RamJi</i></v-card-subtitle>
+    <v-card-title ><h2>{{tiffin.name}}</h2></v-card-title>
+    <v-card-subtitle><strong>Owner-</strong><i>{{tiffin.userId.name}}</i></v-card-subtitle>
     <v-card-subtitle><strong>Rating-</strong><i>5</i></v-card-subtitle>
-    <v-card-subtitle><strong>ContactNo-</strong><i>9519141281</i></v-card-subtitle>
-    <v-card-subtitle><strong>Street-</strong><i>Habibpura, Varanasi</i></v-card-subtitle>
+    <v-card-subtitle><strong>ContactNo-</strong><i>{{tiffin.userId.contact_no}}</i></v-card-subtitle>
+    <v-card-subtitle><strong>Street-</strong><i>{{tiffin.address.street}}</i></v-card-subtitle>
     
     <v-card-text>
       
@@ -32,9 +32,9 @@
 
     <v-card-text>
       <ul class="mx-8">
-            <li><strong>State:</strong><i> U.P.</i></li>
-            <li><strong>City</strong><i> Varanasi</i></li>
-            <li><strong>Pincode:</strong><i> 221001</i></li>
+            <li><strong>State:</strong><i> {{tiffin.address.state}}</i></li>
+            <li><strong>City</strong><i> {{tiffin.address.city}}</i></li>
+            <li><strong>Pincode:</strong><i> {{tiffin.address.pincode}}</i></li>
             
 
 
@@ -42,29 +42,40 @@
     </v-card-text>
         
     <v-card-actions>
+        <div style = "display:flex; justify-content:space-between; align-items: center">
       <v-btn
         color="deep-purple lighten-2"
-        @click="reserve"
+        @click="book"
+        class="mx-2"
       >
         Book a Call
       </v-btn>
+    <show-menu :menu = "this.tiffin.menu"></show-menu>
+    </div>
+
     </v-card-actions>
   </v-card>
 </template>
 
 
 <script>
+import bookCallApi from '../Api/userApi/bookACallApi';
+import showMenu from '../Components/User/showMenu.vue'
   export default {
+    props: ['tiffin'],
     data: () => ({
       loading: false,
       selection: 1,
     }),
+    components: {
+        showMenu
+    },
 
     methods: {
-      reserve () {
-        this.loading = true
-
-        setTimeout(() => (this.loading = false), 2000)
+      async book () {
+        this.loading = true 
+        await bookCallApi(this.tiffin._id);
+        this.loading = false;
       },
     },
   }

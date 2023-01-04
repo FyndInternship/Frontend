@@ -2,12 +2,14 @@
 // import axios from "axios";
 import { axios_backend } from "@/Utils/axios_utils";
 
-const signInApi = (data) => {
-
+const signInApi = (data) => { 
+  console.log(data)
      data = JSON.stringify({
         "email": data.email,
-        "password": data.password
+        "password": data.password,
+        "isServiceProvider": data.isServiceProvider
       });
+      console.log(data)
     let config = {
         method: 'post',
         url: 'auth/signin',

@@ -1,3 +1,4 @@
+import addNewKitchenApi from "@/Api/kitchenAdminApi/addNewKitchenApi";
 import getAllKitchenListApi from "@/Api/kitchenAdminApi/kitchenAdminApi";
 import router from "@/Routes";
 
@@ -8,6 +9,7 @@ const tifinServiceState = {
                 id: null,
                 name: null
             },
+            activeKitchenFinal: {},
             activeTab: "",
             kitchenList: []
         }
@@ -25,6 +27,12 @@ const tifinServiceState = {
         getKitchenList(state) {
             return state.kitchenList;
         },
+        getActiveKitchen(state) {
+          return state.activeKitchen
+        },
+        getActiveRequests(state) {
+          return state.activeKitchen?.requests
+        }
     },
     mutations: {
         setActiveKitchen(state, obj) {
@@ -50,6 +58,16 @@ const tifinServiceState = {
           if(err.response.data.status == 402)
             router.replace('/signin')
           console.log("error from getAllKitchens action", err);
+        }
+      },
+      async addNewKitchenAction(context, payload) {
+        try {
+          await addNewKitchenApi(payload.data);
+          context.dispatch('getAllKitchListAction')
+
+        } catch(err) {
+            if(err.response.data.status == 402)
+            router.replace('/signin')
         }
       }
     }
