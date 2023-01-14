@@ -1,17 +1,29 @@
 <template>
     <form @submit.prevent="callMe">
-     
         <div>
             <v-text-field
                 label="Email"
                 :rules="rules"
+                type="email"
                 hide-details="auto"
                 v-model="email"
+                required=true
             ></v-text-field>
             <br/>
-            <v-text-field label="Password" v-model="password"></v-text-field>
+            <v-text-field label="Password" v-model="password" type="password" required=true></v-text-field>
             <label>
                 Log in as tiffin service provider?
+               <v-snackbar
+                    :timeout="-1"
+                    value=true
+                    absolute
+                    bottom
+                    color="primary"
+                    left
+                    text
+                    >
+      snackbar with <strong>text</strong> property.
+    </v-snackbar>
             <v-radio-group v-model="isServiceProvider">
                 <v-radio label="Yes" value=true></v-radio>
                 <v-radio label="No" value=false></v-radio>

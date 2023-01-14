@@ -9,6 +9,7 @@
         <v-btn
           color="primary"
           v-bind="props"
+          :disabled="this.menu.length === 0"
         >
          Show Menu
         </v-btn>

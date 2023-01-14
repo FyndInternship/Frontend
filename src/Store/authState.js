@@ -1,11 +1,13 @@
-import signInApi from "@/Api/authApi/authApi"
+import signInApi, { signOutApi, signUpApi } from "@/Api/authApi/authApi"
+import openErrorNotification, { openNormalNotification } from "@/commonComponents/openNotification"
 import router from "@/Routes"
 const authState = {
     state() {
         return {
             logInStarted: false,
             isLoggedInUser: false,
-            isLoggedInServiceProvider: false
+            isLoggedInServiceProvider: false,
+            userDetails: null
         }
     },
     getters: {
@@ -17,6 +19,9 @@ const authState = {
         },
         getLogInStarted(state) {
             return state.logInStarted
+        },
+        getUserDetails(state) {
+            return state.userDetails
         }
 
     },
@@ -30,10 +35,16 @@ const authState = {
         logOut(state) {
             state.isLoggedInUser = false;
             state.isLoggedInServiceProvider = false
+            state.userDetails = null
+            localStorage.clear()
         },
         updateLogInLoadStatus(state, payload) {
             state.logInStarted = payload.loading
+        },
+        setUserDetails(state, value) {
+            state.userDetails = value;
         }
+
     },
     actions: {
          logIn(context, payload) {
@@ -41,31 +52,48 @@ const authState = {
             signInApi(payload.data)
             .then((res) => {
                 console.log(res);
-            context.commit('updateLogInLoadStatus', {loading: false})
-            
-            // f(res.data?.data?.isServiceProvider) {
+                context.commit('updateLogInLoadStatus', {loading: false})
                 context.commit('logInServiceProvider', res.data.data.isServiceProvider)
                 context.commit('logInUser', !res.data.data.isServiceProvider)
+                context.commit('setUserDetails', res.data.data)
+                localStorage.setItem('loggedIn', true);
+                localStorage.setItem('userId', res.data?.data?._id)
+                localStorage.setItem('isServiceProvider', res.data?.data?.isServiceProvider)
+                localStorage.setItem('userDetails', JSON.stringify(res.data.data))
 
-            // }
-            // context.commit('logInUser')
-            localStorage.setItem('loggedIn', true);
-            localStorage.setItem('userId', res.data?.data?._id)
-            localStorage.setItem('isServiceProvider', res.data?.data?.isServiceProvider)
-            router.replace('/')
+                router.replace('/')
             }).catch((err) => {
                 console.log(err)
+                
+                openErrorNotification({err, place: "signin"})
+
                 context.commit('updateLogInLoadStatus', {loading: false})
+
 
             })
 
         },
-        logout(context) {
-            
-
+        async signUp(context, payload) {
+            try {
+                await signUpApi(payload.data);
+                openNormalNotification("SignUp successfully")
+                setTimeout(() => {
+                    router.replace('/signin')
+                }, 2000)
+            }catch(err) {
+                openErrorNotification({err, place: "from sign up"})
+            }
+        },
+        async logout(context) {
+            try{
+            await signOutApi()
             context.commit('logOut');
-            localStorage.clear();
-            router.replace('/signin')
+            router.push('/signin')
+            }catch(err) {
+            openErrorNotification({err, place: "adding new kitchen"})
+                console.log(err)
+            }
+            
         }
 
     }

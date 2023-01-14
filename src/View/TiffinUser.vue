@@ -7,7 +7,17 @@
     <hr>
     <!-- kitchen lists component start -->
     <div class = "kitchenList">
-      <div class="kitchenItem" v-for = "(item) in $store.getters.getKitchenList" :key="item._id" @click = "switchKitchen(item)"> {{item.name}}</div>
+      <div v-if ="$store.getters.getLoadingAdminKitchenList" style="margin: 2px">
+        <v-progress-linear indeterminate color="yellow-darken-2"></v-progress-linear>
+      </div>
+      <div class="kitchenItem" v-for = "(item) in $store.getters.getKitchenList" :key="item._id" @click = "switchKitchen(item)"> 
+        <span> {{item.name}}</span>
+        <v-btn variant="text">
+          <font-awesome-icon icon="fa-solid fa-trash" />
+        </v-btn>
+    </div>
+          
+   
     </div>
     <!-- kitchen lists component end -->
   </v-navigation-drawer>
@@ -15,7 +25,9 @@
   <v-container>
     <div class = "kitchenBody">
         <div class = "kitchenTitleBar">
-          <div style="margin: 2rem; font-weight:900; font-size: 2rem">{{activeKitchenName}}</div>
+          
+          <div style="margin: 2rem; font-weight:900; font-size: 2rem">{{
+            $store.getters.getKitchenList.length>0?activeKitchenName:"Please add a kitchen"}}</div>
     </div>
 
 
@@ -95,7 +107,9 @@
                       cols="12"
                       md="4"
                     >
-                     <v-btn type = "submit"> +Add Item</v-btn>
+                     <v-btn type = "submit"
+                     :disabled ='$store.getters.getKitchenList.length<=0'
+                     > +Add Item</v-btn>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -122,8 +136,9 @@
 
 <script>
 import AddKitchenForm from '../Components/TiffinUser/addKitchenForm.vue'
-import addMenuApi from '../Api/kitchenAdminApi/addMenuApi'
+// import addMenuApi from '../Api/kitchenAdminApi/addMenuApi'
 import ShowMenuCards from '../commonComponents/showMenuCards.vue'
+
 export default {
   components: {
     AddKitchenForm,
@@ -145,8 +160,13 @@ export default {
     loadKitchenList() {
       this.$store.dispatch('getAllKitchListAction')
     },
-    async uploadFood() {
-      await addMenuApi({name: this.name, image: this.image[0], tiffinId:"63b5ab4cdba5ca02e179ba9c" })
+     uploadFood() {
+      this.$store.dispatch('addMenuItem', {data: {  
+          name: this.name, 
+          image: this.image[0], 
+          tiffinId:this.activeKitchen._id||null
+      }})
+      // await addMenuApi({ })
     }
   },
   computed: {
@@ -198,7 +218,7 @@ export default {
 .kitchenItem {
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-weight: 800;
   background: rgb(100, 196, 245);

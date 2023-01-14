@@ -1,22 +1,16 @@
 <template>
 <div class="firstDiv">
-
   <base-card>
-
     <div class ="mainDiv">
-          <div v-if ="$store.getters.getLogInStarted" style="margin: 2px">
-        <v-progress-linear
-      indeterminate
-      color="yellow-darken-2"
-    ></v-progress-linear>
- </div>   
-      <!-- <div class = "companyTitle">Tiffin Wala</div> -->
+      <div v-if ="$store.getters.getLogInStarted" style="margin: 2px">
+        <v-progress-linear indeterminate color="yellow-darken-2"></v-progress-linear>
+      </div>   
       <div class = "titleDiv">
-          <h1 >Sign in</h1>
-          <router-link to="/signup"> Don't have an account? Sign Up.</router-link>
+            <h1 >Sign in</h1>
+            <router-link to="/signup"> Don't have an account? Sign Up.</router-link>
       </div>
       <comp-sign-in></comp-sign-in>
-    </div>
+      </div>
   </base-card>  
 </div>
 </template>

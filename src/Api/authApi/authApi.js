@@ -29,4 +29,47 @@ const signInApi = (data) => {
       
 }
 
+const signOutApi = () => {
+      let config = {
+        method: 'post',
+        url: 'auth/signout',
+        withCredentials: true,
+        headers: { 
+            'Content-Type': 'application/json',
+        }
+      };
+
+     return axios_backend(config)   
+}
+
+const signUpApi = (data) => {
+  
+
+
+  let Data = JSON.stringify(data);
+
+  console.log(Data)
+
+let config = {
+  method: 'post',
+  url: 'auth/signup',
+  data : Data,
+  headers: { 
+      'Content-Type': 'application/json',
+  }
+};
+
+
+
+return axios_backend(config)
+
+
+
+}
+
+
 export default signInApi;
+export {
+   signOutApi,
+   signUpApi
+}

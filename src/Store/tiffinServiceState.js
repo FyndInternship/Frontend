@@ -1,10 +1,13 @@
+import addMenuApi from "@/Api/kitchenAdminApi/addMenuApi";
 import addNewKitchenApi from "@/Api/kitchenAdminApi/addNewKitchenApi";
 import getAllKitchenListApi from "@/Api/kitchenAdminApi/kitchenAdminApi";
-import router from "@/Routes";
+import openErrorNotification from "@/commonComponents/openNotification";
+// import router from "@/Routes";
 
 const tifinServiceState = {
     state() {
         return {
+            loadingAdminKitchenList: false,
             activeKitchen: {
                 id: null,
                 name: null
@@ -32,7 +35,11 @@ const tifinServiceState = {
         },
         getActiveRequests(state) {
           return state.activeKitchen?.requests
+        },
+        getLoadingAdminKitchenList(state) {
+          return state.loadingAdminKitchenList
         }
+
     },
     mutations: {
         setActiveKitchen(state, obj) {
@@ -43,21 +50,29 @@ const tifinServiceState = {
         },
         setKitchenList(state, payload) {
           state.kitchenList = payload.kitchens
+        },
+        setLoadingAdminKitchenList(state, value) {
+          state.loadingAdminKitchenList = value
         }
     },
     actions: {
       async getAllKitchListAction(context) {
         try {
-         const kitchens =  await getAllKitchenListApi();
-         console.log(kitchens)
-          
+          context.commit('setLoadingAdminKitchenList', true)
+          const kitchens =  await getAllKitchenListApi();
+
           context.commit('setKitchenList', {kitchens: kitchens.data.data});
-          context.commit('setActiveKitchen', kitchens.data.data.length>0? kitchens.data.data[0]: {}); 
+          context.commit('setActiveKitchen', kitchens.data.data.length>0? kitchens.data.data[0]: {});
+          context.commit('setLoadingAdminKitchenList', false)
+
         }catch(err) {
           console.log(err.response)
-          if(err.response.data.status == 402)
-            router.replace('/signin')
+          openErrorNotification({err, place: "Get all Kitchen List admin"})
+          // if(err.response.data.status == 402)
+          //   router.replace('/signin')
           console.log("error from getAllKitchens action", err);
+          context.commit('setLoadingAdminKitchenList', false)
+
         }
       },
       async addNewKitchenAction(context, payload) {
@@ -66,8 +81,19 @@ const tifinServiceState = {
           context.dispatch('getAllKitchListAction')
 
         } catch(err) {
-            if(err.response.data.status == 402)
-            router.replace('/signin')
+            console.log(err)
+            openErrorNotification({err, place: "adding new kitchen"})
+            // if(err.response.data.status == 402)
+            // router.replace('/signin')
+        }
+      },
+      async addMenuItem(context, payload) {
+        try {
+            const {data} = payload
+            await addMenuApi(data);
+        } catch(err) {
+          console.log(err)
+          openErrorNotification({err, place: "adding menu item"})
         }
       }
     }

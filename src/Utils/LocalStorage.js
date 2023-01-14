@@ -1,4 +1,5 @@
 
+
 exports.setLSuserId = (item) => {
     localStorage.setItem('userId', item)
 }
@@ -18,4 +19,7 @@ exports.setLSisServiceProvider = (item) => {
 
 exports.getLSisServiceProvider = () => {
     return localStorage.getItem('isServiceProvider')
+}
+exports.getLSuserDetails = () => {
+    return localStorage.getItem('userDetails')
 }

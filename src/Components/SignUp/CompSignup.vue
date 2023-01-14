@@ -2,31 +2,79 @@
     <form @submit.prevent="callMe">
         <div>
             <v-text-field
-                label="Username"
+                label="Username*"
                 :rules="rules"
                 hide-details="auto"
-                v-model="username"
+                v-model="name"
+                required =true
             ></v-text-field>
             <br/>
 
             <v-text-field
-                label="Email"
+                label="Email*"
+                :rules="rules"
+                v-model="email"
+                required =true
+                type="email"
+            ></v-text-field>
+            <div style="display:flex;">
+            <v-text-field 
+            label="Password*"
+            v-model="password"
+            required =true
+            type="password"
+            style="margin-right: 4px"
+            >
+            </v-text-field>
+
+            <v-text-field label="Contact Number*"
+            v-model="contact_no"
+            required =true
+            type="number"
+            >
+
+            </v-text-field>
+            </div>
+
+            <div class="address">
+                <v-text-field
+                label="State*"
                 :rules="rules"
                 hide-details="auto"
-                v-model="email"
+                v-model="state"
+                required =true
+                style="margin-right: 4px;"
+
             ></v-text-field>
-            <br/>
-            <v-text-field label="Password">
-            </v-text-field>
+                        <v-text-field
+                label="City*"
+                :rules="rules"
+                hide-details="auto"
+                v-model="city"
+                required =true
+            ></v-text-field>
+            </div>
+            <div class="address">
+             <v-text-field
+                label="Street"
+                :rules="rules"
+                hide-details="auto"
+                v-model="street"
+                style="margin-right: 4px;"
+            ></v-text-field>
+            <v-text-field label="Pincode*"
+                            :rules="rules"
+                hide-details="auto"
+            v-model="pincode"
+            required =true
+            ></v-text-field>
 
-            <v-text-field label="Confirm Password">
-
-            </v-text-field>
+            </div>
             <label>
-                Are you tiffin service provider ?
-            <v-radio-group v-model="serviceProvider">
-                <v-radio label="Yes" value="true"></v-radio>
-                <v-radio label="No" value="false"></v-radio>
+                Are you tiffin service provider?*
+            <v-radio-group v-model="isServiceProvider" required=true>
+                <v-radio label="Yes" value=true></v-radio>
+                <v-radio label="No" value=false></v-radio>
             </v-radio-group>
             </label>
         </div>
@@ -49,14 +97,36 @@ export default {
         value => !!value || 'Required.',
         value => (value && value.length >= 3) || 'Min 3 characters',
       ],
-      email: '',
+      name: '',
       password: '',
-      confirmPassword: '',
-      userName: '',
-      serviceProvider: ''
+      email: '',
+      isServiceProvider: '',
+      street: '',
+      state: '',
+      city: '',
+      pincode: '',
     }),
     methods: {
-        callMe( ) {
+        callMe() {
+            let data = {
+            name: this.name,
+            password: this.password,
+            email: this.email,
+            isServiceProvider: this.isServiceProvider,
+            address: {
+                street: this.street,
+                state: this.state,
+                city: this.city,
+                pincode: this.pincode,
+            }
+        }
+
+                        this.$store.dispatch('signUp',
+                {
+                    data: data,
+                    router: this.$router
+                }
+            )
             alert(this.email)
         }
     }
@@ -70,5 +140,9 @@ form {
 a {
     text-decoration: none;
     margin-left: 1rem;
+}
+.address {
+    /* display: flex;
+    justify-content: space-around; */
 }
 </style>
