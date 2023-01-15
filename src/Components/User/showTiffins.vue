@@ -22,12 +22,7 @@ export default {
     components: {
         TiffinCards
     },
-    methods: {
 
-    },
-    mounted() {
-
-    }
 }
 </script>
 
