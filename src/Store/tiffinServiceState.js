@@ -8,10 +8,7 @@ const tifinServiceState = {
     state() {
         return {
             loadingAdminKitchenList: false,
-            activeKitchen: {
-                id: null,
-                name: null
-            },
+            activeKitchen:{},
             activeKitchenFinal: {},
             activeTab: "",
             kitchenList: []
@@ -53,6 +50,13 @@ const tifinServiceState = {
         },
         setLoadingAdminKitchenList(state, value) {
           state.loadingAdminKitchenList = value
+        },
+        resetTiffinServiceState(state) {
+          state.loadingAdminKitchenList= false,
+          state.activeKitchen = {}
+          state.activeKitchenFinal= {},
+          state.activeTab= "",
+          state.kitchenList= []
         }
     },
     actions: {

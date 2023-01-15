@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
     if(to.meta.requiresAuth && loggedIn !== "true"  && !store.getters.getIsLoggedInUser && !store.getters.getIsLoggedInServiceProvider) {
         next('/signin')
     } else if(to.meta.requiresAuth && !user) {
-        store.commit('logOut')
+        store.dispatch('logout')
         next('/signin')
     }
     

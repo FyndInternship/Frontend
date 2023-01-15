@@ -10,7 +10,7 @@ const openErrorNotification = ({err, place}) => {
                 message: 'Authentication Error',
                 description:'Please log in',
               });
-              store.commit('logOut')
+              store.dispatch('logout')
 
               setTimeout(() => {
               router.push('/signin')

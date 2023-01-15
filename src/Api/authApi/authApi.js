@@ -4,6 +4,7 @@ import { axios_backend } from "@/Utils/axios_utils";
 
 const signInApi = (data) => { 
   console.log(data)
+  
      data = JSON.stringify({
         "email": data.email,
         "password": data.password,

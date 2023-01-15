@@ -43,6 +43,12 @@ const authState = {
         },
         setUserDetails(state, value) {
             state.userDetails = value;
+        },
+        resetAuthState(state) {
+            state.logInStarted= false,
+            state.isLoggedInUser= false,
+            state.isLoggedInServiceProvider= false,
+            state.userDetails= null
         }
 
     },
@@ -87,10 +93,13 @@ const authState = {
         async logout(context) {
             try{
             await signOutApi()
-            context.commit('logOut');
-            router.push('/signin')
+            context.commit("resetAuthState")
+            context.commit("resetTiffinServiceState")
+            context.commit("resetUserTiffinState")
+            localStorage.clear()
+            router.replace('/signin')
             }catch(err) {
-            openErrorNotification({err, place: "adding new kitchen"})
+            openErrorNotification({err, place: "logout"})
                 console.log(err)
             }
             

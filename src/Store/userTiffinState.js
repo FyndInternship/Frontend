@@ -17,7 +17,11 @@ const userTiffinState = {
     mutations: {
         setTiffinList(state, payload) {
           state.tiffinList = payload.tiffins
+        },
+        resetUserTiffinState(state) {
+          state.tiffinList= []
         }
+
     },
     actions: {
       async getAllTiffinListAction(context, payload) {

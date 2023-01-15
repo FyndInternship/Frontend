@@ -73,8 +73,8 @@
             <label>
                 Are you tiffin service provider?*
             <v-radio-group v-model="isServiceProvider" required=true>
-                <v-radio label="Yes" value=true></v-radio>
-                <v-radio label="No" value=false></v-radio>
+                <v-radio label="Yes" :value=true></v-radio>
+                <v-radio label="No" :value=false></v-radio>
             </v-radio-group>
             </label>
         </div>
@@ -127,7 +127,6 @@ export default {
                     router: this.$router
                 }
             )
-            alert(this.email)
         }
     }
 }
