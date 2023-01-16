@@ -18,7 +18,9 @@ const signInApi = (data) => {
           'Content-Type': 'application/json'
         },
         data : data,
-        withCredentials: true
+        withCredentials: true,
+        crossDomain: true,
+        
       };
      return axios_backend(config)
     //  .then((res) => {
