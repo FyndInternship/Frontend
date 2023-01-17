@@ -94,6 +94,7 @@ const tifinServiceState = {
       async addMenuItem(context, payload) {
         try {
             const {data} = payload
+            console.log(data)
             await addMenuApi(data);
         } catch(err) {
           console.log(err)

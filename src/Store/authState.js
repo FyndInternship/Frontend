@@ -66,7 +66,7 @@ const authState = {
                 localStorage.setItem('userId', res.data?.data?._id)
                 localStorage.setItem('isServiceProvider', res.data?.data?.isServiceProvider)
                 localStorage.setItem('userDetails', JSON.stringify(res.data.data))
-
+                localStorage.setItem('token', res.data?.token)
                 router.replace('/')
             }).catch((err) => {
                 console.log(err)

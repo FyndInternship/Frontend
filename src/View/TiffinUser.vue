@@ -164,7 +164,7 @@ export default {
       this.$store.dispatch('addMenuItem', {data: {  
           name: this.name, 
           image: this.image[0], 
-          tiffinId:this.activeKitchen._id||null
+          tiffinId:this.$store.getters.getActiveKitchen._id || null
       }})
       // await addMenuApi({ })
     }
