@@ -3,6 +3,9 @@
 <base-card>
   <div class ="mainDiv">
     <!-- <div class = "companyTitle">Tiffin Wala</div> -->
+          <div v-if ="$store.getters.getSignUpLoad" style="margin: 2px">
+        <v-progress-linear indeterminate color="yellow-darken-2"></v-progress-linear>
+      </div>   
     <div class = "titleDiv">
         <h1 >Sign up</h1>
         <router-link to="/signin"> Already have an account? Sign In.</router-link>

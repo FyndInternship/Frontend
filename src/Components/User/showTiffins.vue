@@ -1,15 +1,14 @@
 <template>
   <v-container>
+  
         <h1 class = "text-center tiffinTitle">Available Tiffin Centers</h1>
+        <div style="margin: 2px" v-if ="$store.getters.getSearchTiffinLoad">
+        <v-progress-linear indeterminate color="yellow-darken-2"></v-progress-linear>
+            </div>
         <div class="cardsDiv">
-        
+         
             <tiffin-cards v-for="tiffin in $store.getters.getTiffinList" :key="tiffin._id" :tiffin = tiffin>
             </tiffin-cards>
-            <!-- <tiffin-cards></tiffin-cards>
-            <tiffin-cards></tiffin-cards>
-            <tiffin-cards></tiffin-cards>
-            <tiffin-cards></tiffin-cards>
-            <tiffin-cards></tiffin-cards> -->
         </div>
     </v-container>
 </template>

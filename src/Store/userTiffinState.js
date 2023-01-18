@@ -6,6 +6,7 @@ import openErrorNotification from "@/commonComponents/openNotification";
 const userTiffinState = {
     state() {
         return {
+            searchTiffinLoad: false,
             tiffinList: []
         }
     },
@@ -13,6 +14,9 @@ const userTiffinState = {
         getTiffinList(state) {
             return state.tiffinList;
         },
+        getSearchTiffinLoad(state) {
+          return state.searchTiffinLoad;
+        }
     },
     mutations: {
         setTiffinList(state, payload) {
@@ -20,17 +24,25 @@ const userTiffinState = {
         },
         resetUserTiffinState(state) {
           state.tiffinList= []
+        },
+        mutateSearchTiffinLoad(state, value) {
+          state.seachTiffinLoad = value
         }
 
     },
     actions: {
       async getAllTiffinListAction(context, payload) {
         try {
+        context.commit('mutateSearchTiffinLoad', true)  
         const tiffins =  await getAllTiffinListApi(payload.data);          
         context.commit('setTiffinList', {tiffins: tiffins.data.data});
+        context.commit('mutateSearchTiffinLoad', false)
+
         }catch(err) {
           console.log(err.response)
           openErrorNotification({err, place:"tiffinlist"})
+        context.commit('mutateSearchTiffinLoad', false)
+
           // if(err.response.data.status == 402)
           //   router.replace('/signin')
         }

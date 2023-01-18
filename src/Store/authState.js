@@ -7,7 +7,8 @@ const authState = {
             logInStarted: false,
             isLoggedInUser: false,
             isLoggedInServiceProvider: false,
-            userDetails: null
+            userDetails: null,
+            signUpLoad: false
         }
     },
     getters: {
@@ -22,8 +23,10 @@ const authState = {
         },
         getUserDetails(state) {
             return state.userDetails
+        },
+        getSignUpLoad(state) {
+            return state.signUpLoad
         }
-
     },
     mutations: {
         logInUser(state, value) {
@@ -49,6 +52,9 @@ const authState = {
             state.isLoggedInUser= false,
             state.isLoggedInServiceProvider= false,
             state.userDetails= null
+        },
+        mutateSignUpLoad(state, value) {
+            state.signUpLoad = value;
         }
 
     },
@@ -81,13 +87,18 @@ const authState = {
         },
         async signUp(context, payload) {
             try {
+                context.commit('mutateSignUpLoad', true)
                 await signUpApi(payload.data);
                 openNormalNotification("SignUp successfully")
+                context.commit('mutateSignUpLoad', false)
+
                 setTimeout(() => {
                     router.replace('/signin')
-                }, 2000)
+                }, 100)
             }catch(err) {
                 openErrorNotification({err, place: "from sign up"})
+                context.commit('mutateSignUpLoad', false)
+
             }
         },
         async logout(context) {

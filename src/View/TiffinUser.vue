@@ -56,7 +56,7 @@
                 <v-expansion-panel-title >{{item.name.toUpperCase()}}</v-expansion-panel-title>
                 <v-expansion-panel-text>
                   <div class="userRequest">
-                    <p>Hii, Please call me for your boobs massage <strong>{{item.contact_no}}</strong></p>
+                    <p>Hii, I would like to know more about the service, Please contact me <strong>{{item.contact_no}}</strong></p>
                     <v-btn>Archive</v-btn>
                     </div>  
                 </v-expansion-panel-text>
